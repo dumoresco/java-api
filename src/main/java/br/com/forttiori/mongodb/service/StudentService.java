@@ -1,71 +1,71 @@
-package br.com.forttiori.mongodb;
+package br.com.forttiori.mongodb.service;
 
+
+import br.com.forttiori.mongodb.model.Students;
+import br.com.forttiori.mongodb.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Id;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RestController
-@RequestMapping("/students")
-public class Controller {
+@Service
+public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
 
-    @GetMapping
-    public List<Students> getAll(){
-
+    public List<Students> findAll(){
         return this.studentRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Students getStudentsById(@PathVariable String id){
+    public List<Integer> findStudentsByAge(int age){
+        return this.findStudentsByAge(age).stream().map( s -> s.intValue() ).collect(Collectors.toList());
+    }
+
+    public Students getStudentsById(String id){
 
         return this.studentRepository
-                .findById(id)
+          .findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Estudante não existe"));
     }
 
-    @PostMapping
-    public Students create(@RequestBody Students students){
+    public Students create(Students students){
         return studentRepository.save(students);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable String id){
+    public ResponseEntity<Object> deleteById(String id){
         Optional<Students> studentsOptional = studentRepository.findById(id);
 
-        if(!studentsOptional.isPresent()){
+        if(studentsOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
         }
         studentRepository.delete(studentsOptional.get());
         return ResponseEntity.status(HttpStatus.OK).body("Student deleted suceffuly");
     }
 
-    @DeleteMapping
-    public void deleteAllById(@RequestParam List<String> ids){
+    public void deleteAllById(List<String> ids){
 
-            studentRepository.deleteAllById(ids);
-
-
+        studentRepository.deleteAllById(ids);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateStudent(@PathVariable String id, @RequestBody Students students){
+    public ResponseEntity<Object> update(String id, Students students){
         Optional<Students> studentsOptional = studentRepository.findById(id);
 
-        if(!studentsOptional.isPresent()){
+        if(studentsOptional.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
         }
         var studentModel = studentsOptional.get();
         studentModel.setName(students.getName());
+        studentModel.setSubjects(students.getSubjects());
+        studentModel.setAge(students.getAge());
+        studentModel.setBirthDate(students.getBirthDate());
         studentRepository.save(studentModel);
         return ResponseEntity.status(HttpStatus.OK).body("Student updated");
     }
-
 
 }
