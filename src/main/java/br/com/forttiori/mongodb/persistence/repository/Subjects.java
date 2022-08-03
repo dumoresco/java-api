@@ -1,4 +1,4 @@
-package br.com.forttiori.mongodb.model;
+package br.com.forttiori.mongodb.persistence.repository;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

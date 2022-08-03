@@ -1,20 +1,20 @@
 package br.com.forttiori.mongodb.controllers;
 
-import br.com.forttiori.mongodb.model.Students;
+import br.com.forttiori.mongodb.model.StudentRequest;
+import br.com.forttiori.mongodb.model.StudentResponse;
+import br.com.forttiori.mongodb.persistence.entity.Students;
 import br.com.forttiori.mongodb.service.StudentService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/students")
@@ -24,12 +24,12 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping
-    public List<Students> getAll(){
-
-        return this.studentService.findAll();
+    @ResponseStatus(value = HttpStatus.OK)
+    public List<Students> getAll(@RequestParam(required = false, value = "age") Integer age){
+        return this.studentService.find(age);
     }
 
-    @GetMapping("/")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String cookie(HttpServletResponse response){
         //create a cookie with name 'website' and value 'javapointers'
         Cookie cookie = new Cookie("website", "javapointers");
@@ -56,35 +56,28 @@ public class StudentController {
         return "home";
     }
 
-    @GetMapping("/filter")
-    public List<Students> getStudentsByAge(@RequestParam("age") int age){
-        return studentService.findAll().stream().filter(students -> students.getAge() == age).collect(Collectors.toList());
-    }
-
     @GetMapping("/{id}")
-    public Students getStudentsById(@PathVariable String id){
-        return studentService.getStudentsById(id);
-
+    public StudentResponse getStudentsById(@PathVariable String id, StudentRequest request){
+        return studentService.getStudentsById(request, id);
     }
 
     @PostMapping
-    public Students create(@RequestBody Students students){
-        return studentService.create(students);
+    @ResponseStatus(HttpStatus.CREATED)
+    public StudentResponse create(@RequestBody @Valid StudentRequest request){
+        return studentService.create(request);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteById(@PathVariable String id){
-        return this.studentService.deleteById(id);
-    }
 
     @DeleteMapping
-    public void deleteAllById(@RequestParam List<String> ids){
-            this.studentService.deleteAllById(ids);
+    public void deleteAllById(@RequestParam(required = false, value = "ids" ) List<String> ids){
+        this.studentService.deleteAll(ids);
     }
 
+
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateStudent(@PathVariable String id, @RequestBody Students students){
-       return this.studentService.update(id, students);
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public StudentResponse updateStudent(@PathVariable String id, @RequestBody @Valid StudentRequest request){
+        return this.studentService.update(id, request);
     }
 
 
