@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.cglib.core.Local;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,8 +26,11 @@ public class StudentRequest {
     @Email(message = "Student email should be valid")
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime startDate;
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  @JsonFormat(
+      pattern = "yyyy-MM-dd HH:mm")
+  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+  private LocalDateTime startDate;
 
     private List<Subjects> subjects;
 

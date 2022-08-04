@@ -5,6 +5,8 @@ import br.com.forttiori.mongodb.model.StudentResponse;
 import br.com.forttiori.mongodb.persistence.entity.Students;
 import br.com.forttiori.mongodb.service.StudentService;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,20 +18,44 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/v1/students")
+@RequiredArgsConstructor
 public class StudentController {
+
 
     private final StudentService studentService;
 
-
-
-    public StudentController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public List<Students> getAll(@RequestParam(required = false) Integer age){
         return this.studentService.find(age);
+    }
+
+
+    @GetMapping("/{id}")
+    @ResponseStatus(value = HttpStatus.OK)
+    public StudentResponse getStudentsById(@PathVariable String id){
+        return studentService.getStudentsById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public StudentResponse create(@RequestBody @Valid StudentRequest request){
+        return studentService.createStudent(request);
+    }
+
+
+    @DeleteMapping
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteAllByIds(@RequestParam(required = false ) List<String> id){
+        this.studentService.deleteAll(id);
+    }
+
+
+    @PutMapping("/{id}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public StudentResponse updateStudent(@PathVariable String id, @RequestBody @Valid StudentRequest request){
+        return this.studentService.updateStudent(id, request);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -58,30 +84,5 @@ public class StudentController {
         }
         return "home";
     }
-
-    @GetMapping("/{id}")
-    public StudentResponse getStudentsById(@PathVariable String id){
-        return studentService.getStudentsById(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public StudentResponse create(@RequestBody @Valid StudentRequest request){
-        return studentService.createStudent(request);
-    }
-
-
-    @DeleteMapping
-    public void deleteAllByIds(@RequestParam(required = false ) List<String> ids){
-        this.studentService.deleteAll(ids);
-    }
-
-
-    @PutMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public StudentResponse updateStudent(@PathVariable String id, @RequestBody @Valid StudentRequest request){
-        return this.studentService.update(id, request);
-    }
-
 
 }
