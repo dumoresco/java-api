@@ -5,9 +5,7 @@ import br.com.forttiori.mongodb.model.StudentResponse;
 import br.com.forttiori.mongodb.persistence.entity.Students;
 import br.com.forttiori.mongodb.service.StudentService;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -17,15 +15,20 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/v1/students")
 public class StudentController {
 
-    @Autowired
-    private StudentService studentService;
+    private final StudentService studentService;
+
+
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Students> getAll(@RequestParam(required = false, value = "age") Integer age){
+    public List<Students> getAll(@RequestParam(required = false) Integer age){
         return this.studentService.find(age);
     }
 
@@ -57,19 +60,19 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public StudentResponse getStudentsById(@PathVariable String id, StudentRequest request){
-        return studentService.getStudentsById(request, id);
+    public StudentResponse getStudentsById(@PathVariable String id){
+        return studentService.getStudentsById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public StudentResponse create(@RequestBody @Valid StudentRequest request){
-        return studentService.create(request);
+        return studentService.createStudent(request);
     }
 
 
     @DeleteMapping
-    public void deleteAllById(@RequestParam(required = false, value = "ids" ) List<String> ids){
+    public void deleteAllByIds(@RequestParam(required = false ) List<String> ids){
         this.studentService.deleteAll(ids);
     }
 

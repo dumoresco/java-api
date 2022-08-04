@@ -2,10 +2,13 @@ package br.com.forttiori.mongodb.model;
 
 import br.com.forttiori.mongodb.persistence.repository.Subjects;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.cglib.core.Local;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -23,8 +26,8 @@ public class StudentRequest {
     @Email(message = "Student email should be valid")
     private String email;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate startDate;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private LocalDateTime startDate;
 
     private List<Subjects> subjects;
 
