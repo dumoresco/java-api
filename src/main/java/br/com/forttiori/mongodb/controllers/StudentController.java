@@ -5,7 +5,6 @@ import br.com.forttiori.mongodb.model.StudentResponse;
 import br.com.forttiori.mongodb.persistence.entity.Students;
 import br.com.forttiori.mongodb.service.StudentService;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

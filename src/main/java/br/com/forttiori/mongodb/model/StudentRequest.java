@@ -26,11 +26,11 @@ public class StudentRequest {
     @Email(message = "Student email should be valid")
     private String email;
 
-  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-  @JsonFormat(
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonFormat(
       pattern = "yyyy-MM-dd HH:mm")
-  @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-  private LocalDateTime startDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    private LocalDateTime startDate;
 
     private List<Subjects> subjects;
 

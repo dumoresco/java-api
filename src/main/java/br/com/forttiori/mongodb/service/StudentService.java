@@ -57,8 +57,16 @@ public class StudentService {
     // Método para deletar uma lista de ids ou caso não receber nenhum id deletar todo o banco;
     public void deleteAll( List<String> id){
 
-        if(id.equals(null)){ studentRepository.deleteAll();}else{
-            studentRepository.deleteAllById(id);
+        if(id == null){
+            studentRepository.deleteAll();
+        }else{
+            for ( String i: id ) {
+                if(i == String.valueOf(getStudentsById(i))){
+                    studentRepository.deleteAllById(id);
+                }
+
+            }                studentRepository.deleteAllById(id);
+
 
 
         }
