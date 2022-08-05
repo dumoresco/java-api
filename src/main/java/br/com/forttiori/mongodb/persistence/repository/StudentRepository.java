@@ -9,7 +9,6 @@ import java.util.Optional;
 @Repository
 public interface StudentRepository extends MongoRepository<Students, String> {
 
-    Optional<Students> findStudentsByAgeGreaterThan(int age);
     Optional<Students> findAllByAgeIs(int age);
 
 }

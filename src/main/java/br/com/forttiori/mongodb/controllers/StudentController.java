@@ -23,27 +23,28 @@ public class StudentController {
 
     private final StudentService studentService;
 
-
+    // Get para retornar todos os estudantes ou por idade.
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<Students> getAll(@RequestParam(required = false) Integer age){
+    public List<StudentResponse> getAll(@RequestParam(required = false) Integer age){
         return this.studentService.find(age);
     }
 
-
+    // Get passando uma rota para retornar um estudante pelo id
     @GetMapping("/{id}")
     @ResponseStatus(value = HttpStatus.OK)
     public StudentResponse getStudentsById(@PathVariable String id){
         return studentService.getStudentsById(id);
     }
 
+    // Post para criar um estudante
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public StudentResponse create(@RequestBody @Valid StudentRequest request){
         return studentService.createStudent(request);
     }
 
-
+    // Delete para deletar um ou mais estudantes
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteAllByIds(@RequestParam(required = false ) List<String> id){
@@ -51,12 +52,17 @@ public class StudentController {
     }
 
 
+    // Put para atualizar um estudante pelo id
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public StudentResponse updateStudent(@PathVariable String id, @RequestBody @Valid StudentRequest request){
-        return this.studentService.updateStudent(id, request);
+    public void updateStudent(@PathVariable String id, @RequestBody @Valid StudentRequest request){
+       this.studentService.updateStudent(id, request);
     }
 
+
+
+
+    // Cookies
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String cookie(HttpServletResponse response){
         //create a cookie with name 'website' and value 'javapointers'
@@ -66,7 +72,7 @@ public class StudentController {
         cookie.setMaxAge(60 * 60);
         //add the cookie to the  response
         response.addCookie(cookie);
-        //return the jsp with the response
+
         return "home";
     }
 

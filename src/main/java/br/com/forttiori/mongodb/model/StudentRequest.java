@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class StudentRequest {
 
-    @Size(min = 3, message = "O nome precisa ter no mínimo {min} caracteres.")
+    @Size(min = 3, message = "Name must have at least {min} letters")
     @NotBlank(message = "Name cannot be empty or null.")
     private String name;
 

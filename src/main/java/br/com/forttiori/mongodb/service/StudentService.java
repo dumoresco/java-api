@@ -28,10 +28,16 @@ public class StudentService {
 
 
     // Método para retornar todos os estudantes ou retornar por idade
-    public List<Students> find(Integer age){
-        if(age == null) return this.studentRepository.findAll();
-        return studentRepository.findAll().stream().filter(students -> students.getAge().equals(age)).collect(Collectors.toList());
+    public List<StudentResponse> find(Integer age){
 
+//        if(age == null) return this.studentRepository.findAll();
+//        return studentRepository.findAll().stream().filter(students -> students.getAge().equals(age)).collect(Collectors.toList());
+        if(age == null){
+            return studentRepository.findAll().stream().map(ResponseMapper::createResponse).toList();
+        }else{
+            return studentRepository.findAll().stream().filter(s -> s.getAge().equals(age)).map(ResponseMapper::createResponse).toList();
+
+        }
     }
 
 
@@ -61,23 +67,17 @@ public class StudentService {
             studentRepository.deleteAll();
         }else{
             for ( String i: id ) {
-                if(i == String.valueOf(getStudentsById(i))){
-                    studentRepository.deleteAllById(id);
-                }
-
-            }                studentRepository.deleteAllById(id);
-
-
-
+                studentRepository.deleteById(studentRepository.findById(i).orElseThrow(() -> new EntityNotFoundException("Id not found: " + i)).getId());
+            }
         }
-
-
     }
 
+
+
     // Método para atualizar um estudante
-    public StudentResponse updateStudent(String id, StudentRequest request){
+    public void updateStudent(String id, StudentRequest request){
         Students entity;
-        entity = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
+         entity = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
 
         entity.setName(request.getName());
         entity.setSubjects(request.getSubjects());
@@ -85,9 +85,6 @@ public class StudentService {
         entity.setEmail(request.getEmail());
 
         studentRepository.save(entity);
-
-        return ResponseMapper.createResponse(entity);
-
     }
 
 }
