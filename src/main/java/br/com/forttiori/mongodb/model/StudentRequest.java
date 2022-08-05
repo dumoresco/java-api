@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.cglib.core.Local;
+import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Data
 public class StudentRequest {
+
 
     @Size(min = 3, message = "Name must have at least {min} letters")
     @NotBlank(message = "Name cannot be empty or null.")

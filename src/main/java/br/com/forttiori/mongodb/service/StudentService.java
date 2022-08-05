@@ -10,11 +10,10 @@ import br.com.forttiori.mongodb.persistence.entity.Students;
 import br.com.forttiori.mongodb.persistence.repository.StudentRepository;
 
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Locale;
+
 
 @Service
 public class StudentService {
@@ -28,15 +27,14 @@ public class StudentService {
 
 
     // Método para retornar todos os estudantes ou retornar por idade
-    public List<StudentResponse> find(Integer age){
+    public List<StudentResponse> find(Integer age, String name){
 
-//        if(age == null) return this.studentRepository.findAll();
-//        return studentRepository.findAll().stream().filter(students -> students.getAge().equals(age)).collect(Collectors.toList());
-        if(age == null){
+        if(age == null & name == null){
             return studentRepository.findAll().stream().map(ResponseMapper::createResponse).toList();
+        }else if(name == null){
+            return studentRepository.findAllByAgeIs(age);
         }else{
-            return studentRepository.findAll().stream().filter(s -> s.getAge().equals(age)).map(ResponseMapper::createResponse).toList();
-
+            return studentRepository.findAllByNameContaining(name);
         }
     }
 

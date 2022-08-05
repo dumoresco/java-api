@@ -6,6 +6,7 @@ import br.com.forttiori.mongodb.persistence.entity.Students;
 import br.com.forttiori.mongodb.service.StudentService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,8 @@ public class StudentController {
     // Get para retornar todos os estudantes ou por idade.
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<StudentResponse> getAll(@RequestParam(required = false) Integer age){
-        return this.studentService.find(age);
+    public List<StudentResponse> getAll(@RequestParam(required = false, value = "age") Integer age, @RequestParam(required = false,value = "name" )String name){
+        return this.studentService.find(age,name);
     }
 
     // Get passando uma rota para retornar um estudante pelo id
