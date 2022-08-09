@@ -43,7 +43,7 @@ public class StudentService {
     // Método para retornar um estudante pelo id
     public StudentResponse getStudentsById(String id){
 
-     var getById = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
+     var getById = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id ));
 
      return ResponseMapper.createResponse(getById);
     }
@@ -65,7 +65,7 @@ public class StudentService {
             studentRepository.deleteAll();
         }else{
             for ( String i: id ) {
-                studentRepository.deleteById(studentRepository.findById(i).orElseThrow(() -> new EntityNotFoundException("Id not found: " + i)).getId());
+                studentRepository.deleteById(studentRepository.findById(i).orElseThrow(() -> new EntityNotFoundException("Id not found: " + i +  " | ID not deleted!")).getId());
             }
         }
     }

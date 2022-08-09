@@ -22,6 +22,8 @@ public class StudentResponse {
     private String name;
     private Integer age;
     private String email;
+    @JsonFormat(
+            pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime startDate;
     private List<Subjects> subjects;
 }

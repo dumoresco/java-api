@@ -27,7 +27,8 @@ public class StudentController {
     // Get para retornar todos os estudantes ou por idade.
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
-    public List<StudentResponse> getAll(@RequestParam(required = false, value = "age") Integer age, @RequestParam(required = false,value = "name" )String name){
+    public List<StudentResponse> getAll(@RequestParam(required = false, value = "age") Integer age,
+                                        @RequestParam(required = false,value = "name" )String name){
         return this.studentService.find(age,name);
     }
 
@@ -41,7 +42,7 @@ public class StudentController {
     // Post para criar um estudante
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public StudentResponse create(@RequestBody @Valid StudentRequest request){
+    public StudentResponse create(@RequestBody @Valid StudentRequest request) throws Exception{
         return studentService.createStudent(request);
     }
 

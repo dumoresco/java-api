@@ -14,6 +14,7 @@ public class ResponseMapper {
         .age(students.getAge())
         .email(students.getEmail())
         .startDate(students.getStartDate())
+            .subjects(students.getSubjects())
         .build();
     }
 
