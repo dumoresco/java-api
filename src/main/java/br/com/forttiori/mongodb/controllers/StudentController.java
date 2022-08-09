@@ -2,6 +2,7 @@ package br.com.forttiori.mongodb.controllers;
 
 import br.com.forttiori.mongodb.model.StudentRequest;
 import br.com.forttiori.mongodb.model.StudentResponse;
+import br.com.forttiori.mongodb.persistence.entity.Gender;
 import br.com.forttiori.mongodb.persistence.entity.Students;
 import br.com.forttiori.mongodb.service.StudentService;
 
@@ -28,8 +29,8 @@ public class StudentController {
     @GetMapping
     @ResponseStatus(value = HttpStatus.OK)
     public List<StudentResponse> getAll(@RequestParam(required = false, value = "age") Integer age,
-                                        @RequestParam(required = false,value = "name" )String name){
-        return this.studentService.find(age,name);
+                                        @RequestParam(required = false,value = "gender" ) String gender){
+        return this.studentService.find(age,gender);
     }
 
     // Get passando uma rota para retornar um estudante pelo id

@@ -1,14 +1,12 @@
 package br.com.forttiori.mongodb.model;
 
-import br.com.forttiori.mongodb.persistence.repository.Subjects;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import br.com.forttiori.mongodb.persistence.entity.Gender;
+import br.com.forttiori.mongodb.persistence.entity.Subjects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -19,11 +17,11 @@ import java.util.List;
 public class StudentResponse {
 
     private String id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private Integer age;
     private String email;
-    @JsonFormat(
-            pattern = "dd-MM-yyyy HH:mm")
+    private Gender gender;
     private LocalDateTime startDate;
     private List<Subjects> subjects;
 }

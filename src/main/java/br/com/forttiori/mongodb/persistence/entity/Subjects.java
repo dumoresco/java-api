@@ -1,7 +1,8 @@
-package br.com.forttiori.mongodb.persistence.repository;
+package br.com.forttiori.mongodb.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public enum Subjects {
     @JsonProperty("matematica")

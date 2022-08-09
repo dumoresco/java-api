@@ -6,6 +6,7 @@ import br.com.forttiori.mongodb.model.StudentRequest;
 import br.com.forttiori.mongodb.model.StudentResponse;
 import br.com.forttiori.mongodb.model.mapper.RequestMapper;
 import br.com.forttiori.mongodb.model.mapper.ResponseMapper;
+import br.com.forttiori.mongodb.persistence.entity.Gender;
 import br.com.forttiori.mongodb.persistence.entity.Students;
 import br.com.forttiori.mongodb.persistence.repository.StudentRepository;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -27,14 +29,14 @@ public class StudentService {
 
 
     // Método para retornar todos os estudantes ou retornar por idade
-    public List<StudentResponse> find(Integer age, String name){
+    public List<StudentResponse> find(Integer age, String gender){
 
-        if(age == null & name == null){
+        if(age == null & gender == null){
             return studentRepository.findAll().stream().map(ResponseMapper::createResponse).toList();
-        }else if(name == null){
+        }else if(gender == null){
             return studentRepository.findAllByAgeIs(age);
         }else{
-            return studentRepository.findAllByNameContaining(name);
+            return studentRepository.findAllByGender(gender.toUpperCase(Locale.ROOT)).stream().collect(Collectors.toList());
         }
     }
 
@@ -77,9 +79,11 @@ public class StudentService {
         Students entity;
          entity = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
 
-        entity.setName(request.getName());
+        entity.setFirstName(request.getFirstName());
+        entity.setLastName(request.getLastName());
         entity.setSubjects(request.getSubjects());
         entity.setAge(request.getAge());
+        entity.setGender(request.getGender());
         entity.setEmail(request.getEmail());
 
         studentRepository.save(entity);

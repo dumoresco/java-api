@@ -10,9 +10,11 @@ public class ResponseMapper {
     public static StudentResponse createResponse(Students students){
     return StudentResponse.builder()
         .id(students.getId())
-        .name(students.getName())
+        .firstName(students.getFirstName())
+        .lastName(students.getLastName())
         .age(students.getAge())
         .email(students.getEmail())
+            .gender(students.getGender())
         .startDate(students.getStartDate())
             .subjects(students.getSubjects())
         .build();

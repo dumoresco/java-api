@@ -8,12 +8,14 @@ import java.time.LocalDateTime;
 
 public class RequestMapper {
     public static Students createEntity(StudentRequest studentRequest) {
-        return Students.builder()
-                .name(studentRequest.getName())
-                .age(studentRequest.getAge())
-                .email(studentRequest.getEmail())
-                .startDate(LocalDateTime.now())
-                .build();
+    return Students.builder()
+        .firstName(studentRequest.getFirstName())
+        .lastName(studentRequest.getLastName())
+        .age(studentRequest.getAge())
+        .email(studentRequest.getEmail())
+            .gender(studentRequest.getGender())
+        .startDate(LocalDateTime.now())
+        .build();
     }
 
 }
