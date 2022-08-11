@@ -4,6 +4,7 @@ import br.com.forttiori.mongodb.persistence.entity.Gender;
 import br.com.forttiori.mongodb.persistence.entity.Subjects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class StudentRequest {
 
   @JsonProperty()
   private Gender gender;
+
 
   @NotBlank(message = "StudentEntity cep cannot be empty or null")
   private String cep;

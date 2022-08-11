@@ -84,14 +84,15 @@ public class StudentService {
     // Método para atualizar um estudante
     public void updateStudent(String id, StudentRequest request){
         StudentEntity entity;
-         entity = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
+
+        entity = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
 
         entity.setFirstName(request.getFirstName());
         entity.setLastName(request.getLastName());
         entity.setSubjects(request.getSubjects());
         entity.setAge(request.getAge());
+        entity.setAddress(AddressEntity.builder().cep(request.getCep()).build());
         entity.setGender(request.getGender());
-//        entity.setCep(request.getCep());
         entity.setEmail(request.getEmail());
 
         studentRepository.save(entity);
@@ -99,9 +100,8 @@ public class StudentService {
 
 
     // Esse método vai buscar o cep na api e retornar a classe com os dados injetados
-    public AddressEntity consultaCep(String cep){
+    public AddressEntity consultaCep( String cep){
         return new RestTemplate().getForObject("https://viacep.com.br/ws/"+cep+"/json/", AddressEntity.class);
-
 
     }
 
