@@ -1,14 +1,13 @@
 package br.com.forttiori.mongodb.controllers;
 
-import br.com.forttiori.mongodb.model.StudentRequest;
-import br.com.forttiori.mongodb.model.StudentResponse;
-import br.com.forttiori.mongodb.persistence.entity.Gender;
-import br.com.forttiori.mongodb.persistence.entity.Students;
+import br.com.forttiori.mongodb.model.Student.StudentRequest;
+import br.com.forttiori.mongodb.model.Student.StudentResponse;
+import br.com.forttiori.mongodb.persistence.entity.AddressEntity;
 import br.com.forttiori.mongodb.service.StudentService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -43,7 +42,7 @@ public class StudentController {
     // Post para criar um estudante
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public StudentResponse create(@RequestBody @Valid StudentRequest request) throws Exception{
+    public StudentResponse create(@RequestBody @Valid StudentRequest request) {
         return studentService.createStudent(request);
     }
 
@@ -91,6 +90,18 @@ public class StudentController {
             }
         }
         return "home";
+    }
+
+    @ResponseBody
+    @GetMapping("/cep")
+    public ResponseEntity<AddressEntity> consultaCep(@RequestParam(value = "q")String q){
+
+        AddressEntity addressEntity =         studentService.consultaCep(q);
+
+
+
+        return new ResponseEntity(addressEntity, HttpStatus.OK);
+
     }
 
 }

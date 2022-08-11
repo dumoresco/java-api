@@ -2,15 +2,16 @@ package br.com.forttiori.mongodb.service;
 
 
 import br.com.forttiori.mongodb.exceptions.EntityNotFoundException;
-import br.com.forttiori.mongodb.model.StudentRequest;
-import br.com.forttiori.mongodb.model.StudentResponse;
-import br.com.forttiori.mongodb.model.mapper.RequestMapper;
-import br.com.forttiori.mongodb.model.mapper.ResponseMapper;
-import br.com.forttiori.mongodb.persistence.entity.Gender;
-import br.com.forttiori.mongodb.persistence.entity.Students;
+import br.com.forttiori.mongodb.model.Student.StudentRequest;
+import br.com.forttiori.mongodb.model.Student.StudentResponse;
+import br.com.forttiori.mongodb.model.Student.mapper.RequestMapper;
+import br.com.forttiori.mongodb.model.Student.mapper.ResponseMapper;
+import br.com.forttiori.mongodb.persistence.entity.AddressEntity;
+import br.com.forttiori.mongodb.persistence.entity.StudentEntity;
 import br.com.forttiori.mongodb.persistence.repository.StudentRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Locale;
@@ -32,7 +33,9 @@ public class StudentService {
     public List<StudentResponse> find(Integer age, String gender){
 
         if(age == null & gender == null){
-            return studentRepository.findAll().stream().map(ResponseMapper::createResponse).toList();
+
+            return studentRepository.findAll().stream().map(ResponseMapper::createResponse).collect(Collectors.toList());
+
         }else if(gender == null){
             return studentRepository.findAllByAgeIs(age);
         }else{
@@ -53,8 +56,12 @@ public class StudentService {
 
     // Método para criar um estudante
     public StudentResponse createStudent(StudentRequest studentRequest){
-        Students students = RequestMapper.createEntity(studentRequest);
+        AddressEntity addressEntity = consultaCep(studentRequest.getCep());
+
+        StudentEntity students = RequestMapper.createEntity(studentRequest,addressEntity);
         studentRepository.save(students);
+
+
 
         return ResponseMapper.createResponse(students);
     }
@@ -76,7 +83,7 @@ public class StudentService {
 
     // Método para atualizar um estudante
     public void updateStudent(String id, StudentRequest request){
-        Students entity;
+        StudentEntity entity;
          entity = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
 
         entity.setFirstName(request.getFirstName());
@@ -84,9 +91,18 @@ public class StudentService {
         entity.setSubjects(request.getSubjects());
         entity.setAge(request.getAge());
         entity.setGender(request.getGender());
+//        entity.setCep(request.getCep());
         entity.setEmail(request.getEmail());
 
         studentRepository.save(entity);
+    }
+
+
+    // Esse método vai buscar o cep na api e retornar a classe com os dados injetados
+    public AddressEntity consultaCep(String cep){
+        return new RestTemplate().getForObject("https://viacep.com.br/ws/"+cep+"/json/", AddressEntity.class);
+
+
     }
 
 }

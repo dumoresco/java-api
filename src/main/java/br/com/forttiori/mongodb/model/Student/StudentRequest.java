@@ -1,4 +1,4 @@
-package br.com.forttiori.mongodb.model;
+package br.com.forttiori.mongodb.model.Student;
 
 import br.com.forttiori.mongodb.persistence.entity.Gender;
 import br.com.forttiori.mongodb.persistence.entity.Subjects;
@@ -23,14 +23,20 @@ public class StudentRequest {
     private Integer age;
 
   @Email(
-      message = "Student email should be valid",
+      message = "StudentEntity email should be valid",
       regexp =
               "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")
-  @NotBlank(message = "Student e-mail cannot be empty or null.")
+  @NotBlank(message = "StudentEntity e-mail cannot be empty or null.")
   private String email;
 
   @JsonProperty()
   private Gender gender;
+
+  @NotBlank(message = "StudentEntity cep cannot be empty or null")
+  private String cep;
+
+  @NotBlank(message = "StudentEntity document cannot be empty or null")
+  private String document;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime startDate;
