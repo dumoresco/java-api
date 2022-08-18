@@ -3,7 +3,6 @@ package br.com.forttiori.mongodb.model.Student.mapper;
 import br.com.forttiori.mongodb.model.Student.StudentRequest;
 import br.com.forttiori.mongodb.persistence.entity.AddressEntity;
 import br.com.forttiori.mongodb.persistence.entity.StudentEntity;
-import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators;
 
 import java.time.LocalDateTime;
 

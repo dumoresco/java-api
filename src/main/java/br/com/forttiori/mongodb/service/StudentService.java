@@ -31,11 +31,8 @@ public class StudentService {
 
     // Método para retornar todos os estudantes ou retornar por idade
     public List<StudentResponse> find(Integer age, String gender){
-
         if(age == null & gender == null){
-
             return studentRepository.findAll().stream().map(ResponseMapper::createResponse).collect(Collectors.toList());
-
         }else if(gender == null){
             return studentRepository.findAllByAgeIs(age);
         }else{
@@ -55,21 +52,17 @@ public class StudentService {
 
 
     // Método para criar um estudante
-    public StudentResponse createStudent(StudentRequest studentRequest){
+    public void createStudent(StudentRequest studentRequest){
         AddressEntity addressEntity = consultaCep(studentRequest.getCep());
 
         StudentEntity students = RequestMapper.createEntity(studentRequest,addressEntity);
         studentRepository.save(students);
-
-
-
-        return ResponseMapper.createResponse(students);
+//        return ResponseMapper.createResponse(students);
     }
 
 
     // Método para deletar uma lista de ids ou caso não receber nenhum id deletar todo o banco;
     public void deleteAll( List<String> id){
-
         if(id == null){
             studentRepository.deleteAll();
         }else{
@@ -83,19 +76,19 @@ public class StudentService {
 
     // Método para atualizar um estudante
     public void updateStudent(String id, StudentRequest request){
-        StudentEntity entity;
 
-        entity = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
 
-        entity.setFirstName(request.getFirstName());
-        entity.setLastName(request.getLastName());
-        entity.setSubjects(request.getSubjects());
-        entity.setAge(request.getAge());
-        entity.setAddress(AddressEntity.builder().cep(request.getCep()).build());
-        entity.setGender(request.getGender());
-        entity.setEmail(request.getEmail());
+        StudentEntity studentEntity = studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
 
-        studentRepository.save(entity);
+        studentEntity.setFirstName(request.getFirstName());
+        studentEntity.setLastName(request.getLastName());
+        studentEntity.setSubjects(request.getSubjects());
+        studentEntity.setAge(request.getAge());
+        studentEntity.setAddress(consultaCep(request.getCep()));
+        studentEntity.setGender(request.getGender());
+        studentEntity.setEmail(request.getEmail());
+
+        studentRepository.save(studentEntity);
     }
 
 

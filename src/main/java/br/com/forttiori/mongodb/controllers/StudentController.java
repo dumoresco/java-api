@@ -42,8 +42,8 @@ public class StudentController {
     // Post para criar um estudante
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
-    public StudentResponse create(@RequestBody @Valid StudentRequest request) {
-        return studentService.createStudent(request);
+    public void create(@RequestBody @Valid StudentRequest request) {
+         studentService.createStudent(request);
     }
 
     // Delete para deletar um ou mais estudantes
