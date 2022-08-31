@@ -3,9 +3,13 @@ package br.com.forttiori.mongodb.controllers;
 import br.com.forttiori.mongodb.model.Student.StudentRequest;
 import br.com.forttiori.mongodb.model.Student.StudentResponse;
 import br.com.forttiori.mongodb.persistence.entity.AddressEntity;
+import br.com.forttiori.mongodb.persistence.entity.StudentEntity;
+import br.com.forttiori.mongodb.persistence.entity.StudentQuery;
 import br.com.forttiori.mongodb.service.StudentService;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,36 +21,45 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
-@RequestMapping("/v1/students")
-@RequiredArgsConstructor
+@RequestMapping("v1/students")
+@AllArgsConstructor
 public class StudentController {
-
-
-    private final StudentService studentService;
+    StudentService studentService;
 
     // Get para retornar todos os estudantes ou por idade.
     @GetMapping
-    @ResponseStatus(value = HttpStatus.OK)
-    public List<StudentResponse> getAll(@RequestParam(required = false, value = "age") Integer age,
-                                        @RequestParam(required = false,value = "gender" ) String gender){
-        return this.studentService.find(age,gender);
+    public List<StudentResponse> getAll( ){
+        return studentService.getAll();
     }
 
-    // Get passando uma rota para retornar um estudante pelo id
+    @GetMapping("/search")
+    public List<StudentResponse> getStudentByAge(@RequestParam(value = "age", required = false) Integer age){
+        return studentService.getStudentsByAge(age);
+    }
+
+    @GetMapping("/pages")
+    public Page<StudentResponse> getStudentsByPage(Pageable pageable){
+        return studentService.getStudentsByPage(pageable);
+    }
+
+
     @GetMapping("/{id}")
-    @ResponseStatus(value = HttpStatus.OK)
     public StudentResponse getStudentsById(@PathVariable String id){
         return studentService.getStudentsById(id);
     }
 
-    // Post para criar um estudante
+    @GetMapping("/filter")
+    public List<StudentResponse> findStudentByName(@RequestBody StudentQuery studentQuery){
+        return studentService.findStudentByName(studentQuery);
+    }
+
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
     public void create(@RequestBody @Valid StudentRequest request) {
          studentService.createStudent(request);
     }
 
-    // Delete para deletar um ou mais estudantes
+
     @DeleteMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteAllByIds(@RequestParam(required = false ) List<String> id){
@@ -54,7 +67,6 @@ public class StudentController {
     }
 
 
-    // Put para atualizar um estudante pelo id
     @PutMapping("/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
     public void updateStudent(@PathVariable String id, @RequestBody @Valid StudentRequest request){
@@ -70,8 +82,9 @@ public class StudentController {
         //create a cookie with name 'website' and value 'javapointers'
         Cookie cookie = new Cookie("website", "javapointers");
         //set the expiration time
-        //1 hour = 60 seconds x 60 minutes
+
         cookie.setMaxAge(60 * 60);
+
         //add the cookie to the  response
         response.addCookie(cookie);
 

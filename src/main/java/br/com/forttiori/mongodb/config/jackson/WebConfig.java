@@ -17,7 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") .allowedMethods("GET", "POST", "PUT", "DELETE");// <- assim permite de qualquer origem, troque "/**" pelo seu dominio por exemplo "http://meudominio.com"
+        registry.addMapping("/**") .allowedMethods("GET", "POST", "PUT", "DELETE");// <- assim permite acesso de qualquer origem
     }
 
     @Bean
@@ -27,4 +27,6 @@ public class WebConfig implements WebMvcConfigurer {
             builder.deserializers(new LocalDateDeserializer(DateTimeFormatter.ISO_LOCAL_DATE));
         };
     }
+
+
 }

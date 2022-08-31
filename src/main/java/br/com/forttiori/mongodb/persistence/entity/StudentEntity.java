@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder //@Builder permite que você produza automaticamente o código necessário para que sua classe seja instanciável com código.
 @Document
 public class StudentEntity {
 

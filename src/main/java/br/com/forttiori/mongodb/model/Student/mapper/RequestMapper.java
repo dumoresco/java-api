@@ -15,18 +15,21 @@ public class RequestMapper {
         .age(studentRequest.getAge())
         .email(studentRequest.getEmail())
         .document(studentRequest.getDocument())
-        .address(
-            AddressEntity.builder()
+        .address(getAddress(addressEntity))
+        .gender(studentRequest.getGender())
+        .startDate(LocalDateTime.now())
+        .build();
+    }
+
+    private static AddressEntity getAddress(AddressEntity addressEntity) {
+        return AddressEntity.builder()
                 .cep(addressEntity.getCep())
                 .bairro(addressEntity.getBairro())
                 .complemento(addressEntity.getComplemento())
                 .localidade(addressEntity.getLocalidade())
                 .uf(addressEntity.getUf())
                 .logradouro(addressEntity.getLogradouro())
-                .build())
-        .gender(studentRequest.getGender())
-        .startDate(LocalDateTime.now())
-        .build();
+                .build();
     }
 
 }

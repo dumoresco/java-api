@@ -42,6 +42,7 @@ public class StudentExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST.value())
                 .fields(fields)
                 .fieldsMessage(fieldsMessage).build(), HttpStatus.BAD_REQUEST);
+
     }
 
 
