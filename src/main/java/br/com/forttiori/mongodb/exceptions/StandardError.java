@@ -1,6 +1,7 @@
 package br.com.forttiori.mongodb.exceptions;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -12,6 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
+@Builder
 public class StandardError implements Serializable {
 
     private Instant timestamp;

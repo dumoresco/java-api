@@ -17,9 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 public class StudentRequest {
 
-  @Size(min = 3, message = "Name must have at least {min} letters")
-  @NotBlank(message = "Name cannot be empty or null.")
+  @Size(min = 3, message = "First Name must have at least {min} letters")
+  @NotBlank(message = "First Name cannot be empty or null.")
   private String firstName;
+  @Size(min = 3, message = "Last name must have at least {min} letters")
+  @NotBlank(message = "Last Name cannot be empty or null.")
   private String lastName;
   @Positive(message = "Age must be greater than 0")
   @NotNull(message = "Age cannot be null")

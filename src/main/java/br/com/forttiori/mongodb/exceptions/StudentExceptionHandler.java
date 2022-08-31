@@ -13,37 +13,48 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 @ControllerAdvice
 public class StudentExceptionHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request){
+  @ExceptionHandler(EntityNotFoundException.class)
+  @ResponseStatus(value = NOT_FOUND)
+  public StandardError entityNotFound(
+      EntityNotFoundException e, HttpServletRequest request) {
 
-        StandardError error = new StandardError();
-        error.setTimestamp(Instant.now());
-        error.setStatus(HttpStatus.NOT_FOUND.value());
-        error.setError("StudentEntity not found");
-        error.setMessage(e.getMessage());
-        error.setPath(request.getRequestURI());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    StandardError error = new StandardError();
 
-    }
+    return (StandardError.builder().timestamp(Instant.now()).status(NOT_FOUND.value()).error("StudentEntity not found").message(NOT_FOUND.name()).path(request.getRequestURI())).build();
 
+//    error.setTimestamp(Instant.now());
+//    error.setStatus(NOT_FOUND.value());
+//    error.setError("StudentEntity not found");
+//    error.setMessage(NOT_FOUND.name());
+//    error.setPath(request.getRequestURI());
+//    return error;
+  }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationExceptionDetails> entityNotFound(MethodArgumentNotValidException e){
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<ValidationExceptionDetails> notValid(MethodArgumentNotValidException e) {
 
-        List<FieldError> fieldErrorList = e.getBindingResult().getFieldErrors();
+    List<FieldError> fieldErrorList = e.getBindingResult().getFieldErrors();
 
-        String fields = fieldErrorList.stream().map(FieldError::getField).collect(Collectors.joining(", "));
-        String fieldsMessage = fieldErrorList.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(", "));
+    String fields =
+        fieldErrorList.stream().map(FieldError::getField).collect(Collectors.joining(", "));
+    String fieldsMessage =
+        fieldErrorList.stream()
+            .map(FieldError::getDefaultMessage)
+            .collect(Collectors.joining(", "));
 
-        return new ResponseEntity<>(ValidationExceptionDetails.builder().timestamp(Instant.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .fields(fields)
-                .fieldsMessage(fieldsMessage).build(), HttpStatus.BAD_REQUEST);
-
-    }
-
-
+    return new ResponseEntity<>(ValidationExceptionDetails.builder()
+            .timestamp(Instant.now())
+            .status(HttpStatus.BAD_REQUEST.value())
+            .fields(fields)
+            .error("Invalid args")
+            .path(e.getBindingResult().getNestedPath())
+            .message(e.getMessage())
+            .fieldsMessage(fieldsMessage)
+            .build(), HttpStatus.BAD_REQUEST);
+  }
 }
