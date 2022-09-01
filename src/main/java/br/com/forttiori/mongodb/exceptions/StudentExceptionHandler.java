@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
@@ -27,34 +28,28 @@ public class StudentExceptionHandler {
 
     return (StandardError.builder().timestamp(Instant.now()).status(NOT_FOUND.value()).error("StudentEntity not found").message(NOT_FOUND.name()).path(request.getRequestURI())).build();
 
-//    error.setTimestamp(Instant.now());
-//    error.setStatus(NOT_FOUND.value());
-//    error.setError("StudentEntity not found");
-//    error.setMessage(NOT_FOUND.name());
-//    error.setPath(request.getRequestURI());
-//    return error;
   }
 
+  @ResponseStatus(value = BAD_REQUEST)
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ValidationExceptionDetails> notValid(MethodArgumentNotValidException e) {
+  public StandardError notValid(MethodArgumentNotValidException e) {
 
     List<FieldError> fieldErrorList = e.getBindingResult().getFieldErrors();
 
     String fields =
-        fieldErrorList.stream().map(FieldError::getField).collect(Collectors.joining(", "));
-    String fieldsMessage =
-        fieldErrorList.stream()
-            .map(FieldError::getDefaultMessage)
-            .collect(Collectors.joining(", "));
+            fieldErrorList.stream().map(FieldError::getField).collect(Collectors.joining(", "));
+    var as =
+            fieldErrorList.stream()
+                    .map(FieldError::getDefaultMessage)
+                    .collect(Collectors.joining(", "));
 
-    return new ResponseEntity<>(ValidationExceptionDetails.builder()
+    return new StandardError( StandardError.builder()
             .timestamp(Instant.now())
-            .status(HttpStatus.BAD_REQUEST.value())
-            .fields(fields)
+            .status(BAD_REQUEST.value())
             .error("Invalid args")
             .path(e.getBindingResult().getNestedPath())
             .message(e.getMessage())
-            .fieldsMessage(fieldsMessage)
-            .build(), HttpStatus.BAD_REQUEST);
+            .build());
   }
 }
+

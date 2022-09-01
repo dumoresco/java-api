@@ -22,4 +22,6 @@ public class StandardError implements Serializable {
     private String message;
     private String path;
 
+    public StandardError(StandardError invalid_args) {
+    }
 }

@@ -11,6 +11,7 @@ import br.com.forttiori.mongodb.persistence.entity.StudentEntity;
 import br.com.forttiori.mongodb.persistence.entity.StudentQuery;
 import br.com.forttiori.mongodb.persistence.repository.StudentRepository;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -63,7 +64,7 @@ public class StudentService {
     return ResponseMapper.createResponse(getById);
   }
 
-  public void createStudent(StudentRequest studentRequest) {
+  public void createStudent(@NotNull StudentRequest studentRequest) {
     AddressEntity addressEntity = consultaCep(studentRequest.getCep());
 
     StudentEntity students = RequestMapper.createEntity(studentRequest, addressEntity);
