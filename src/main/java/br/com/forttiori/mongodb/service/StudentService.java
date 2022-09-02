@@ -11,6 +11,7 @@ import br.com.forttiori.mongodb.persistence.entity.StudentEntity;
 import br.com.forttiori.mongodb.persistence.entity.StudentQuery;
 import br.com.forttiori.mongodb.persistence.repository.StudentRepository;
 
+import org.apache.coyote.Response;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,21 +41,15 @@ public class StudentService {
 
   // Refatorar para retornar StudentResponse
   public List<StudentResponse> getAll() {
-    return studentRepository.findAll().stream().map(ResponseMapper::createResponse).collect(Collectors.toList());
+
+
+      return studentRepository.findAll().stream().map(ResponseMapper::createResponse).collect(Collectors.toList());
+
+
   }
 
   public Page<StudentResponse> getStudentsByPage(Pageable pageable){
     return studentRepository.findAll(pageable).map(ResponseMapper::createResponse);
-  }
-
-  public List<StudentResponse> getStudentsByAge(Integer age){
-    Query query = new Query();
-    query.addCriteria(Criteria.where("age").is(age));
-    List<StudentEntity> students = mongoTemplate.find(query, StudentEntity.class);
-
-    return students.stream()
-            .map(ResponseMapper::createResponse)
-            .collect(Collectors.toList());
   }
 
   public StudentResponse getStudentsById(String id) {
