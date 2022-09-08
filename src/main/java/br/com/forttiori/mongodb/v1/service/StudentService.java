@@ -27,26 +27,22 @@ import java.util.stream.Collectors;
 public class StudentService {
 
   private final StudentRepository studentRepository;
-  private final RestTemplateConfiguration restTemplateConfiguration;
 
   @Autowired
   RestTemplate restTemplate;
 
 
-  public StudentService(StudentRepository studentRepository, RestTemplateConfiguration restTemplateConfiguration) {
+  public StudentService(StudentRepository studentRepository) {
     this.studentRepository = studentRepository;
-    this.restTemplateConfiguration = restTemplateConfiguration;
   }
 
   // Refatorar para retornar StudentResponse
   public List<StudentResponse> getAll() {
       return studentRepository.findAll().stream().map(ResponseMapper::createResponse).collect(Collectors.toList());
   }
-
   public Page<StudentResponse> getStudentsByPage(Pageable pageable){
     return studentRepository.findAll(pageable).map(ResponseMapper::createResponse);
   }
-
   public StudentResponse getStudentsById(String id) {
     var getById =
         studentRepository
@@ -54,15 +50,13 @@ public class StudentService {
             .orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
     return ResponseMapper.createResponse(getById);
   }
-
-  public void createStudent(@Valid @NotNull StudentRequest studentRequest) {
+  public void createStudent(@Valid  StudentRequest studentRequest) {
     AddressEntity addressEntity = consultaCep(studentRequest.getCep());
 
     StudentEntity students = RequestMapper.createEntity(studentRequest, addressEntity);
 
     studentRepository.save(students);
   }
-
   public List<StudentResponse> findStudentByName(@NotNull StudentQuery studentQuery){
     String firstName = studentQuery.getFirstName();
     String lastName = studentQuery.getLastName();
@@ -81,10 +75,8 @@ public class StudentService {
         getStudentsById(i);
     }
       studentRepository.deleteAllById(id);
-
     }
   }
-
   // Método para atualizar um estudante
   public void updateStudent(String id, StudentRequest request) {
     StudentEntity oldStudentEntity =

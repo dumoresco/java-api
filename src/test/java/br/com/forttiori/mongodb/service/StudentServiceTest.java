@@ -12,10 +12,12 @@ import br.com.forttiori.mongodb.v1.persistence.repository.StudentRepository;
 import br.com.forttiori.mongodb.v1.service.StudentService;
 import org.junit.jupiter.api.Assertions;
 
+import org.springframework.data.domain.Pageable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.*;
+
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -37,6 +39,7 @@ public class StudentServiceTest extends ApplicationConfigTest {
         RestTemplate restTemplate;
     @Mock
     RestTemplateConfiguration restTemplateConfiguration;
+    private Pageable pageable;
 
     @Test
     @DisplayName("Deve criar um estudante")
@@ -85,7 +88,7 @@ public class StudentServiceTest extends ApplicationConfigTest {
         Assertions.assertEquals(StudentCreator.studentEntityStub().getId(), studentResponse.getId());
     }
     @Test
-    @DisplayName("Deve deletar a lista de usuários(Ids) especificadas.")
+    @DisplayName("Deve deletar a lista de estudantes especificadas.")
     void shouldReceiveAListOfIdsAndDeleteSpecifiedUsers() {
 //      GIVEN
         Mockito.when(studentRepository.findById(Mockito.anyString())).thenReturn(Optional.ofNullable((StudentCreator.studentEntityStub())));
@@ -107,7 +110,7 @@ public class StudentServiceTest extends ApplicationConfigTest {
         Mockito.verify(studentRepository, Mockito.times(1)).deleteAll();
     }
     @Test
-    @DisplayName("Deve fazer o update do usuário especificado.")
+    @DisplayName("Deve fazer o update do estudante.")
     void shoulUpdateAnSpecifiedUser() {
 //      GIVEN
         Mockito.when(studentRepository.findById(Mockito.anyString())).thenReturn(Optional.ofNullable(StudentCreator.studentEntityStub()));
@@ -134,4 +137,6 @@ public class StudentServiceTest extends ApplicationConfigTest {
         studentService.findStudentByName(studentQuery);
         Assertions.assertEquals(studentQuery.getFirstName(), "");
     }
+
+
 }
