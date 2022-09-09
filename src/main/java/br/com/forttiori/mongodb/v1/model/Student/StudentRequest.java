@@ -1,7 +1,6 @@
 package br.com.forttiori.mongodb.v1.model.Student;
 
 import br.com.forttiori.mongodb.v1.persistence.entity.Gender;
-import br.com.forttiori.mongodb.v1.persistence.entity.Subjects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -48,6 +47,5 @@ public class StudentRequest {
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   @ApiModelProperty(value = "Data de matrícula do estudante")
   private LocalDateTime startDate;
-  @ApiModelProperty(value = "Disciplinas cadastradas do estudante", example = "[matematica, portugues]")
-  private List<Subjects> subjects;
+
 }

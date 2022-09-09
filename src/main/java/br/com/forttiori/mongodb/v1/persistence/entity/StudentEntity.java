@@ -29,5 +29,4 @@ public class StudentEntity {
     private String document;
     private AddressEntity address;
     private LocalDateTime startDate;
-    private List<Subjects> subjects;
 }

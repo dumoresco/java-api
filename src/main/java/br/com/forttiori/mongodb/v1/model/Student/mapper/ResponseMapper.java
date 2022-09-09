@@ -18,7 +18,6 @@ public class ResponseMapper {
             .document(students.getDocument())
             .address(students.getAddress())
         .startDate(students.getStartDate())
-            .subjects(students.getSubjects())
         .build();
     }
 

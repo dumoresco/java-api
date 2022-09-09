@@ -2,7 +2,6 @@ package br.com.forttiori.mongodb.v1.model.Student;
 
 import br.com.forttiori.mongodb.v1.persistence.entity.AddressEntity;
 import br.com.forttiori.mongodb.v1.persistence.entity.Gender;
-import br.com.forttiori.mongodb.v1.persistence.entity.Subjects;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -18,7 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonPropertyOrder(value = {"id","firstName", "lastName", "age", "email", "gender", "startDate", "subjects"})
+@JsonPropertyOrder(value = {"id","firstName", "lastName", "age", "email", "startDate", "subjects"})
 public class StudentResponse {
 
     @JsonProperty("id")
@@ -44,6 +43,4 @@ public class StudentResponse {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime startDate;
 
-    @JsonProperty("subjects")
-    private List<Subjects> subjects;
 }

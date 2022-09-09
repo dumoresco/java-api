@@ -88,6 +88,7 @@ public class StudentServiceTest extends ApplicationConfigTest {
         Assertions.assertEquals(StudentCreator.studentEntityStub().getId(), studentResponse.getId());
     }
     @Test
+
     @DisplayName("Deve deletar a lista de estudantes especificadas.")
     void shouldReceiveAListOfIdsAndDeleteSpecifiedUsers() {
 //      GIVEN

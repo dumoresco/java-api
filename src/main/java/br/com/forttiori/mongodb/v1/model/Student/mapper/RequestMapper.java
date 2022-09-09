@@ -16,7 +16,6 @@ public class RequestMapper {
         .email(studentRequest.getEmail())
         .document(studentRequest.getDocument())
         .address(getAddress(addressEntity))
-        .gender(studentRequest.getGender())
         .startDate(LocalDateTime.now())
         .build();
     }
