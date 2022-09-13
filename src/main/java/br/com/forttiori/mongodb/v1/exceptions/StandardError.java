@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
-import java.time.Instant;
+
 
 @Data
 @AllArgsConstructor
@@ -16,12 +16,7 @@ import java.time.Instant;
 @Builder
 public class StandardError implements Serializable {
 
-    private Instant timestamp;
     private Integer status;
-    private String error;
     private String message;
-    private String path;
 
-    public StandardError(StandardError invalid_args) {
-    }
 }

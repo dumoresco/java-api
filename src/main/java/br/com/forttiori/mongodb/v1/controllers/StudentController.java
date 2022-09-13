@@ -2,7 +2,6 @@ package br.com.forttiori.mongodb.v1.controllers;
 
 import br.com.forttiori.mongodb.v1.model.Student.StudentRequest;
 import br.com.forttiori.mongodb.v1.model.Student.StudentResponse;
-import br.com.forttiori.mongodb.v1.persistence.entity.AddressEntity;
 import br.com.forttiori.mongodb.v1.persistence.entity.StudentQuery;
 import br.com.forttiori.mongodb.v1.service.StudentService;
 
@@ -12,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -22,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.*;
 
+@SuppressWarnings("SameReturnValue")
 @RestController
 @RequestMapping("v1/students")
 @AllArgsConstructor
@@ -68,7 +67,7 @@ public class StudentController {
     @ApiOperation(value = "Delete all students or by a list of ids")
     public void deleteAllByIds(
             @RequestParam(required = false )
-            @ApiParam(name = "id", required = false, value = "Delete students by id" ) List<String> id){
+            @ApiParam(name = "id", value = "Delete students by id" ) List<String> id){
         this.studentService.deleteAll(id);
     }
 
@@ -84,7 +83,7 @@ public class StudentController {
 
 
     // Cookies
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     @ApiIgnore
     public String cookie(  HttpServletResponse response){
         //create a cookie with name 'website' and value 'javapointers'
@@ -96,10 +95,10 @@ public class StudentController {
         //add the cookie to the  response
         response.addCookie(cookie);
 
-        return "home";
+        return "home 1";
     }
 
-    @RequestMapping(value = "/cookie", method = RequestMethod.GET)
+    @GetMapping("/cookie")
     @ApiIgnore
     public String readCookie(  HttpServletRequest request){
         //get all cookies
@@ -114,17 +113,5 @@ public class StudentController {
         return "home";
     }
 
-    @ResponseBody
-    @GetMapping("/cep")
-    @ApiIgnore()
-    public ResponseEntity<AddressEntity> consultaCep(@RequestParam(value = "q") String q){
-
-        AddressEntity addressEntity =         studentService.consultaCep(q);
-
-
-
-        return new ResponseEntity<AddressEntity>(addressEntity, HttpStatus.OK);
-
-    }
 
 }

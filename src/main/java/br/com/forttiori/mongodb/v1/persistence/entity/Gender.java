@@ -17,7 +17,7 @@ import java.util.EnumSet;
     @JsonProperty(value = "other")
      OTHER("other");
 
-    private String genero;
+    private final String genero;
 
 
    @JsonCreator

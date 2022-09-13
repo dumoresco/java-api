@@ -8,6 +8,6 @@ import java.util.List;
 @Repository
 public interface StudentCustomRepository {
 
-    public List<StudentEntity> find(String firstName, String lastName);
+     List<StudentEntity> find(String firstName, String lastName);
 
 }

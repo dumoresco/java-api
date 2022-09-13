@@ -1,4 +1,4 @@
-package br.com.forttiori.mongodb.v1.config.resttemplate;
+package br.com.forttiori.mongodb.v1.integration;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

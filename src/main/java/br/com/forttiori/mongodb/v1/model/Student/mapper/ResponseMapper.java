@@ -7,18 +7,18 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ResponseMapper {
 
-    public static StudentResponse createResponse(StudentEntity students){
+  public static StudentResponse createResponse(StudentEntity students) {
     return StudentResponse.builder()
         .id(students.getId())
         .firstName(students.getFirstName())
         .lastName(students.getLastName())
         .age(students.getAge())
+        .gender(students.getGender())
         .email(students.getEmail())
-            .gender(students.getGender())
-            .document(students.getDocument())
-            .address(students.getAddress())
+        .gender(students.getGender())
+        .document(students.getDocument())
+        .address(students.getAddress())
         .startDate(students.getStartDate())
         .build();
-    }
-
+  }
 }

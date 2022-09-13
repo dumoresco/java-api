@@ -8,6 +8,7 @@ class MongodbApplicationTests {
 
     @Test
     void contextLoads() {
+        MongodbApplication.main(new String[] {});
     }
 
 }

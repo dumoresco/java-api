@@ -6,33 +6,29 @@ import br.com.forttiori.mongodb.v1.persistence.entity.StudentEntity;
 
 import java.time.LocalDateTime;
 
-
 public class RequestMapper {
-    public static StudentEntity createEntity(StudentRequest studentRequest, AddressEntity addressEntity) {
+  public static StudentEntity createEntity(
+      StudentRequest studentRequest, AddressEntity addressEntity) {
     return StudentEntity.builder()
         .firstName(studentRequest.getFirstName())
         .lastName(studentRequest.getLastName())
         .age(studentRequest.getAge())
         .email(studentRequest.getEmail())
         .document(studentRequest.getDocument())
+        .gender(studentRequest.getGender())
         .address(getAddress(addressEntity))
         .startDate(LocalDateTime.now())
         .build();
-    }
+  }
 
-
-
-    private static AddressEntity getAddress(AddressEntity addressEntity) {
-        return AddressEntity.builder()
-                .cep(addressEntity.getCep())
-                .bairro(addressEntity.getBairro())
-                .complemento(addressEntity.getComplemento())
-                .localidade(addressEntity.getLocalidade())
-                .uf(addressEntity.getUf())
-                .logradouro(addressEntity.getLogradouro())
-                .build();
-    }
-
+  private static AddressEntity getAddress(AddressEntity addressEntity) {
+    return AddressEntity.builder()
+        .cep(addressEntity.getCep())
+        .bairro(addressEntity.getBairro())
+        .complemento(addressEntity.getComplemento())
+        .localidade(addressEntity.getLocalidade())
+        .uf(addressEntity.getUf())
+        .logradouro(addressEntity.getLogradouro())
+        .build();
+  }
 }
-
-

@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Data
@@ -27,6 +27,8 @@ public class StudentEntity {
     private String email;
     private Gender gender;
     private String document;
+
+    @Valid
     private AddressEntity address;
     private LocalDateTime startDate;
 }

@@ -1,7 +1,7 @@
 package br.com.forttiori.mongodb.v1.service;
 
-import br.com.forttiori.mongodb.v1.config.resttemplate.RestTemplateConfiguration;
 import br.com.forttiori.mongodb.v1.exceptions.EntityNotFoundException;
+import br.com.forttiori.mongodb.v1.integration.AddressIntegration;
 import br.com.forttiori.mongodb.v1.model.Student.StudentRequest;
 import br.com.forttiori.mongodb.v1.model.Student.StudentResponse;
 import br.com.forttiori.mongodb.v1.model.Student.mapper.RequestMapper;
@@ -31,6 +31,9 @@ public class StudentService {
   @Autowired
   RestTemplate restTemplate;
 
+  @Autowired
+  AddressIntegration addressIntegration;
+
 
   public StudentService(StudentRepository studentRepository) {
     this.studentRepository = studentRepository;
@@ -51,7 +54,7 @@ public class StudentService {
     return ResponseMapper.createResponse(getById);
   }
   public void createStudent(@Valid  StudentRequest studentRequest) {
-    AddressEntity addressEntity = consultaCep(studentRequest.getCep());
+    AddressEntity addressEntity = addressIntegration.consultaCep(studentRequest.getCep());
 
     StudentEntity students = RequestMapper.createEntity(studentRequest, addressEntity);
 
@@ -85,7 +88,7 @@ public class StudentService {
             .orElseThrow(() -> new EntityNotFoundException(" Id not found: " + id));
 
     StudentEntity newStudentEntity =
-        RequestMapper.createEntity(request, consultaCep(request.getCep()));
+        RequestMapper.createEntity(request, addressIntegration.consultaCep(request.getCep()));
 
     newStudentEntity.setId(oldStudentEntity.getId());
 
@@ -95,8 +98,5 @@ public class StudentService {
   }
 
   // Esse método vai buscar o cep na api e retornar a classe com os dados injetados
-  public AddressEntity consultaCep(String cep) {
-    var URL = "/ws/" + cep + "/json/";
-    return restTemplate.getForObject(URL, AddressEntity.class);
-  }
+
 }
