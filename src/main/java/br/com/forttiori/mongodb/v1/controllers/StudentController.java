@@ -7,6 +7,7 @@ import br.com.forttiori.mongodb.v1.service.StudentService;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import jdk.internal.logger.BootstrapLogger;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.*;
+
+import static java.awt.event.InputEvent.logger;
 
 @SuppressWarnings("SameReturnValue")
 @RestController
@@ -107,7 +110,7 @@ public class StudentController {
         for (Cookie cookie : cookies) {
             //display only the cookie with the name 'website'
             if (cookie.getName().equals("website")) {
-                System.out.println(cookie.getValue());
+                System.Logger(cookie.getValue());
             }
         }
         return "home";

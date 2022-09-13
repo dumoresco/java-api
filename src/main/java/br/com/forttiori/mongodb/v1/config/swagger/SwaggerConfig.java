@@ -17,7 +17,7 @@ public class SwaggerConfig {
     public Docket swagger(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("br.com.forttiori.mongodb.controllers"))
+                .apis(RequestHandlerSelectors.basePackage("br.com.forttiori.mongodb.v1.controllers"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(metaInfo());

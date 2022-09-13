@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class StudentService {
@@ -41,7 +41,7 @@ public class StudentService {
 
   // Refatorar para retornar StudentResponse
   public List<StudentResponse> getAll() {
-      return studentRepository.findAll().stream().map(ResponseMapper::createResponse).collect(Collectors.toList());
+      return studentRepository.findAll().stream().map(ResponseMapper::createResponse).toList();
   }
   public Page<StudentResponse> getStudentsByPage(Pageable pageable){
     return studentRepository.findAll(pageable).map(ResponseMapper::createResponse);
@@ -65,10 +65,9 @@ public class StudentService {
     String lastName = studentQuery.getLastName();
 
 
-    return studentRepository.find(firstName, lastName).stream().map(ResponseMapper::createResponse).collect(Collectors.toList());
+    return studentRepository.find(firstName, lastName).stream().map(ResponseMapper::createResponse).toList();
   }
 
-  // Método para deletar uma lista de ids ou caso não receber nenhum id deletar todo o banco;
 
   public void deleteAll(List<String> id) {
     if (id.isEmpty()) {

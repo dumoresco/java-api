@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface StudentRepository extends MongoRepository<StudentEntity, String>, StudentCustomRepository {
 
-//    List<StudentResponse> findByFirstNameContains(String name);
+
     List<StudentResponse> findAllByAgeIs(int age);
     List<StudentResponse> findAllByGender(Gender gender);
 

@@ -16,7 +16,10 @@ import java.io.Serializable;
 @Builder
 public class StandardError implements Serializable {
 
-    private Integer status;
-    private String message;
+    protected Integer status;
+    protected String message;
 
+    public StandardError(StandardError build) {
+
+    }
 }

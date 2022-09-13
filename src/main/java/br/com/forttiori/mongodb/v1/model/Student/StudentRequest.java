@@ -31,7 +31,7 @@ public class StudentRequest {
   private Integer age;
   @Email(
       message = "StudentEntity email should be valid",
-      regexp = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")
+
   @NotBlank(message = "StudentEntity e-mail cannot be empty or null.")
   @ApiModelProperty(value = "Email do estudante", required = true, example = "eduardoiost@outlook.com")
   private String email;
